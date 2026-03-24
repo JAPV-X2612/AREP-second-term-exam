@@ -274,8 +274,9 @@ GET http://54.209.250.173:8080/proxy/catalan?value=10
 
 ## 🎬 **Demo Video**
 
-> A short demonstration video (under 1 minute) showing the full system in operation, including the active-passive failover, is available at:  
-> 📎 *(link to video)*
+> A short demonstration video showing the full system in operation, including the active-passive failover, is available at:
+
+📎 [Watch Demo Video](assets/videos/2nd-term-exam-video-demo.mov)
 
 ---
 
