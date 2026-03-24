@@ -70,6 +70,7 @@ public class ActivePassiveBalancer {
         con.setRequestMethod("GET");
         con.setConnectTimeout(3000);
         con.setReadTimeout(3000);
+        con.setRequestProperty("Accept", "application/json");
 
         if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
             throw new Exception("Non-200 response from " + urlString);
