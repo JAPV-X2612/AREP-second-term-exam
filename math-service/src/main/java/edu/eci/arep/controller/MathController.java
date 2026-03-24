@@ -1,9 +1,13 @@
 package edu.eci.arep.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * REST controller that exposes mathematical computation endpoints.
@@ -13,47 +17,41 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2026-03-24
  */
 @RestController
-@RequestMapping("/api/math")
 public class MathController {
 
     /**
-     * Computes the sine of a given angle in radians.
+     * Computes the Catalan sequence from C0 to Cn using dynamic programming
+     * based on the recurrence relation: Cn = sum(Ci * C(n-1-i)) for i=0..n-1.
      *
-     * @param value the angle in radians
-     * @return the sine of the given value
+     * @param value the non-negative integer n
+     * @return a map with operation name, input, and output sequence as JSON
+     * @throws IllegalArgumentException if value is negative
      */
-    @GetMapping("/sin")
-    public double sin(@RequestParam double value) {
-        return Math.sin(value);
-    }
-
-    /**
-     * Computes the cosine of a given angle in radians.
-     *
-     * @param value the angle in radians
-     * @return the cosine of the given value
-     */
-    @GetMapping("/cos")
-    public double cos(@RequestParam double value) {
-        return Math.cos(value);
-    }
-
-    /**
-     * Computes the factorial of a non-negative integer.
-     *
-     * @param value the non-negative integer
-     * @return the factorial of the given value
-     * @throws IllegalArgumentException if value is negative or greater than 20
-     */
-    @GetMapping("/factorial")
-    public long factorial(@RequestParam int value) {
-        if (value < 0 || value > 20) {
-            throw new IllegalArgumentException("Value must be between 0 and 20");
+    @GetMapping("/catalan")
+    public Map<String, Object> catalan(@RequestParam int value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("Value must be a non-negative integer");
         }
-        long result = 1;
-        for (int i = 2; i <= value; i++) {
-            result *= i;
+
+        BigInteger[] c = new BigInteger[value + 1];
+        c[0] = BigInteger.ONE;
+
+        for (int n = 1; n <= value; n++) {
+            c[n] = BigInteger.ZERO;
+            for (int i = 0; i < n; i++) {
+                c[n] = c[n].add(c[i].multiply(c[n - 1 - i]));
+            }
         }
-        return result;
+
+        StringJoiner joiner = new StringJoiner(", ");
+        for (BigInteger val : c) {
+            joiner.add(val.toString());
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("operation", "Catalan Sequence");
+        response.put("input", value);
+        response.put("output", joiner.toString());
+        return response;
     }
 }
