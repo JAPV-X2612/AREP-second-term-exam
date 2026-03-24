@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2026-03-24
  */
 @RestController
-@RequestMapping("/proxy/math")
+@RequestMapping("/proxy")
 public class ProxyController {
 
     private final ActivePassiveBalancer balancer;
@@ -30,36 +30,14 @@ public class ProxyController {
     }
 
     /**
-     * Proxies a sine computation request to the active Math Service.
+     * Proxies a Catalan sequence computation request to the active Math Service.
      *
-     * @param value the angle in radians
-     * @return the sine result or an error message
+     * @param value the non-negative integer n
+     * @return the JSON response from the Math Service or a 503 error
      */
-    @GetMapping("/sin")
-    public ResponseEntity<String> sin(@RequestParam double value) {
-        return forward("/api/math/sin?value=" + value);
-    }
-
-    /**
-     * Proxies a cosine computation request to the active Math Service.
-     *
-     * @param value the angle in radians
-     * @return the cosine result or an error message
-     */
-    @GetMapping("/cos")
-    public ResponseEntity<String> cos(@RequestParam double value) {
-        return forward("/api/math/cos?value=" + value);
-    }
-
-    /**
-     * Proxies a factorial computation request to the active Math Service.
-     *
-     * @param value the non-negative integer
-     * @return the factorial result or an error message
-     */
-    @GetMapping("/factorial")
-    public ResponseEntity<String> factorial(@RequestParam int value) {
-        return forward("/api/math/factorial?value=" + value);
+    @GetMapping("/catalan")
+    public ResponseEntity<String> catalan(@RequestParam int value) {
+        return forward("/catalan?value=" + value);
     }
 
     /**
