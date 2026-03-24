@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Math Services</title>
-    </head>
-    <body>
-        <h1>Math Services</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Services</title>
+</head>
+<body>
+<h1>Math Services</h1>
 
-        <h2>Sine</h2>
-        <label for="sinValue">Value (radians):</label>
-        <input type="number" id="sinValue" step="any" value="1.0">
-        <button onclick="compute('sin', 'sinValue', 'sinResult')">Compute</button>
-        <p>Result: <span id="sinResult">-</span></p>
+<h2>Catalan Sequence</h2>
+<label for="catalanValue">Value of n (non-negative integer):</label>
+<input type="number" id="catalanValue" min="0" value="10">
+<button onclick="compute()">Compute</button>
 
-        <h2>Cosine</h2>
-        <label for="cosValue">Value (radians):</label>
-        <input type="number" id="cosValue" step="any" value="1.0">
-        <button onclick="compute('cos', 'cosValue', 'cosResult')">Compute</button>
-        <p>Result: <span id="cosResult">-</span></p>
+<div id="catalanResult"></div>
 
-        <h2>Factorial</h2>
-        <label for="factValue">Value (0-20):</label>
-        <input type="number" id="factValue" min="0" max="20" value="5">
-        <button onclick="compute('factorial', 'factValue', 'factResult')">Compute</button>
-        <p>Result: <span id="factResult">-</span></p>
-
-        <script>
-            function compute(fn, inputId, resultId) {
-                const value = document.getElementById(inputId).value;
-                const xhttp = new XMLHttpRequest();
-                xhttp.onload = function() {
-                    document.getElementById(resultId).innerHTML = this.responseText;
-                };
-                xhttp.onerror = function() {
-                    document.getElementById(resultId).innerHTML = "Error connecting to service";
-                };
-                xhttp.open("GET", "/proxy/math/" + fn + "?value=" + value);
-                xhttp.send();
-            }
-        </script>
-    </body>
+<script>
+    function compute() {
+        const value = document.getElementById("catalanValue").value;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            const data = JSON.parse(this.responseText);
+            document.getElementById("catalanResult").innerHTML =
+                "<p><strong>Operation:</strong> " + data.operation + "</p>" +
+                "<p><strong>Input:</strong> " + data.input + "</p>" +
+                "<p><strong>Output:</strong> " + data.output + "</p>";
+        };
+        xhttp.onerror = function() {
+            document.getElementById("catalanResult").innerHTML =
+                "<p>Error connecting to service</p>";
+        };
+        xhttp.open("GET", "/proxy/catalan?value=" + value);
+        xhttp.send();
+    }
+</script>
+</body>
 </html>
